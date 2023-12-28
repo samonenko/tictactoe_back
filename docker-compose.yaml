@@ -1,0 +1,39 @@
+version: '3'
+services:
+    web:
+        image: nginx:latest
+        ports:
+            - "80:80"
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+            - ./app:/app
+    
+    php:
+        build:
+            context: .
+            dockerfile: PHP.Dockerfile
+        volumes:
+            - ./app:/app
+    
+    mysql:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: 12345
+            MYSQL_USER: user
+            MYSQL_PASSWORD: 12345
+            MYSQL_DATABASE: db
+        volumes:
+            - mysqldata:/var/lib/mysql
+            - ./sql:/docker-entrypoint-initdb.d # Выполнение всех SQL файлов из директории sql
+        ports:
+            - 3306:3306
+    
+    adminer:
+        image: adminer
+        restart: always
+        environment:
+            ADMINER_DEFAULT_SERVER: mysql
+        ports:
+        - 8080:8080
+volumes:
+    mysqldata: {}
