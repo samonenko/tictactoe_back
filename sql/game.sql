@@ -10,10 +10,11 @@ SET NAMES utf8mb4;
 DROP TABLE IF EXISTS `game`;
 CREATE TABLE `game` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `board` text NOT NULL,
-  `player` int NOT NULL,
+  `json` json NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+INSERT INTO `game` (`id`, `json`) VALUES
+(10,	'{\"board\": {\"data\": [[\"_\", \"_\", \"_\"], [\"_\", \"_\", \"_\"], [\"_\", \"_\", \"_\"]], \"size\": \"3\"}, \"score\": {\"O\": 0, \"X\": 0}, \"current_player\": \"X\"}');
 
--- 2023-12-28 17:34:43
+-- 2023-12-30 09:15:53
