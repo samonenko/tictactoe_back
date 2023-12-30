@@ -270,16 +270,18 @@ class Ttt_application {
             Board::EMPTY => "empty.png",
         ];
 
-        $result = "<table border=1>"; // Создаем HTML таблицу
+        $result = "<div class='div-table'>"; // Создаем HTML таблицу
         
         $n = $this->ttt_game->board->size;
+        $cell_size = intdiv(300-$n-1,$n);
+
         for ($i=0 ; $i != $n; $i++) {
-            $result .= "<tr>";
+            $result .= "<div class='div-table-row'>";
             for ($j=0 ; $j != $n; $j++) {
 
                 // Картинка, которая соответствует ячейке  
                 $img = $image[$this->ttt_game->board->data[$i][$j]]; 
-                
+                $result .= "<div class='div-table-col' style='height:{$cell_size}px;'>";
                 if ($is_interactive) { // Если сейчас ход данного игрока,
                     // то каждая клеточка -- это гиперссылка, которая должна хранить следующую информацию:
                     // id игры, 
@@ -288,16 +290,18 @@ class Ttt_application {
                     $params = "game_id={$this->game_id}&i={$i}&j={$j}&player={$player}";
                     
                     // Создаем ячейку таблицы, которая содержит картинку, которая является ссылкой 
-                    // c соответствующими параметрами 
-                    $result .= "<td><a href='?{$params}'><img src='{$img}' width='20' height='20'></a></td>";
+                    // c соответствующими параметрами
+                    
+                    $result .= "<a href='?{$params}'><img src='{$img}' width='{$cell_size}' height='{$cell_size}'></a>";
                 } else { // Если ход другого игрока
                     // то данному игроку показываем поле без ссылок
-                    $result .= "<td><img src='{$img}' width='20' height='20'></td>";
+                    $result .= "<img src='{$img}' width='{$cell_size}' height='{$cell_size}'>";
                 }
+                $result .= "</div>";
             }
-            $result .= "</tr>";
-        }
-        $result .= "</table>";        
+            $result .= "</div>";
+        }   
+        $result .= "</div>";        
         return $result;
     }
 
@@ -364,7 +368,8 @@ class Ttt_application {
             
             $this->message_html = $this->get_message_html($player, $result, $is_interactive); // Формируем сообщение для игрока для отображения 
             $this->board_html = $this->get_board_html($player, $is_interactive); // Формируем доску для отображения 
-            
+        return 'board';
+
         } else { // Если сейчас игра не идет
             if (isset($_GET['size'])) { // Но адресной строке был указан размер 
                 $this->new_game($_GET['size']); // тогда создаем новую игру данного размера
@@ -372,11 +377,14 @@ class Ttt_application {
                 $this->message_html = "Создана новая игра id:{$this->game_id}<br>";
                 $this->message_html .= "<a href='?game_id={$this->game_id}&player=".Board::CROSS."'>Ссылка для крестиков</a><br>";
                 $this->message_html .= "<a href='?game_id={$this->game_id}&player=".Board::NOUGHT."'>Ссылка для ноликов</a><br>";
+                return 'start';
             } else {
                 $this->board_html = Null;
-                $this->message_html = "<form action='?' method='get'>";
-                $this->message_html .= "Размер поля: <input type='number' name='size'>";
-                $this->message_html .= "<input type='submit' value='Начать'>";
+                $this->message_html = '<form action="?" method="get">';
+                $this->message_html .= 'Размер поля: <input type="number" name="size"style=" width:50px" value=3>';
+                $this->message_html .= '<input type="submit" value="Начать">';
+                $this->message_html .= '</form>';
+                return 'new_game';
             }
         }
         
