@@ -28,12 +28,9 @@
         echo "<div id='rectangle3' class='rectangle3'></div>";
         echo "<div id='board' class='board'>{$app->board_html}</div>";
         echo "<div id='rectangle4' class='rectangle4'></div>";
-        echo "<div id='score' class='score'>{$app->score_html}</div>";
-        
+        echo "<div id='score' class='score'>{$app->score_html}</div>";   
     }
 ?>
 </div>
-
-
 </body>
 </html>

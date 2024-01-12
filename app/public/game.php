@@ -272,8 +272,11 @@ class Ttt_application {
 
         $result = "<div class='div-table'>"; // Создаем HTML таблицу
         
-        $n = $this->ttt_game->board->size;
-        $cell_size = intdiv(300-$n-1,$n);
+        $n = $this->ttt_game->board->size; // Размер игры
+        
+        // Размер ячейки для поля 300 x 300. 
+        // Вычитание ($n+1) для учета линии границ.
+        $cell_size = intdiv(300-($n+1),$n); 
 
         for ($i=0 ; $i != $n; $i++) {
             $result .= "<div class='div-table-row'>";
